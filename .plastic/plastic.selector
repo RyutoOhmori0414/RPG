@@ -1,0 +1,4 @@
+repository "RPG@Omorichan@cloud"
+  path "/"
+    br "/main"
+    co "/main"
