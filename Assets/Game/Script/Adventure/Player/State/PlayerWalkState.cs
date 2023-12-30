@@ -2,10 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace RPGAdventure
+namespace RPG.Adventure.Player
 {
     public class PlayerWalkState : AbstractState
     {
+        public PlayerWalkState(PlayerProperty property) : base(property)
+        {
+        }
+        
         public override void OnEnter()
         {
             throw new System.NotImplementedException();
@@ -13,7 +17,7 @@ namespace RPGAdventure
 
         public override void OnUpdate()
         {
-            throw new System.NotImplementedException();
+            _conditions.Check();
         }
 
         public override void OnFixedUpdate()

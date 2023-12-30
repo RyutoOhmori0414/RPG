@@ -4,27 +4,27 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace RPGAdventure
+namespace RPG.Adventure.Player
 {
-    public class StateConditions : ICollection<Func<Type>>
+    public class StateConditions : ICollection<Func<bool>>
     {
-        private List<Func<Type>> _conditions = default;
+        private List<Func<bool>> _conditions = default;
 
-        public StateConditions(params Func<Type>[] list) => _conditions = list.ToList();
+        public StateConditions(params Func<bool>[] list) => _conditions = list.ToList();
 
-        public IEnumerator<Func<Type>> GetEnumerator() => new Enumerator(_conditions);
+        public IEnumerator<Func<bool>> GetEnumerator() => new Enumerator(_conditions);
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-        public void Add(Func<Type> item) => Debug.LogWarning($"{nameof(StateConditions)}は読み取り専用です");
+        public void Add(Func<bool> item) => Debug.LogWarning($"{nameof(StateConditions)}は読み取り専用です");
 
         public void Clear() => Debug.LogWarning($"{nameof(StateConditions)}は読み取り専用です");
 
-        public bool Contains(Func<Type> item) => _conditions.Contains(item);
+        public bool Contains(Func<bool> item) => _conditions.Contains(item);
 
-        public void CopyTo(Func<Type>[] array, int arrayIndex) => _conditions.CopyTo(array, arrayIndex);
+        public void CopyTo(Func<bool>[] array, int arrayIndex) => _conditions.CopyTo(array, arrayIndex);
 
-        public bool Remove(Func<Type> item)
+        public bool Remove(Func<bool> item)
         {
             Debug.LogWarning($"{nameof(StateConditions)}は読み取り専用です");
             return false;
@@ -33,31 +33,35 @@ namespace RPGAdventure
         public int Count => _conditions.Count;
         public bool IsReadOnly => true;
 
-        /// <summary>このコレクションを調べて遷移先を返す</summary>
-        /// <returns>遷移先 or null(遷移しない)</returns>
-        public Type Check()
+        /// <summary>このコレクションを調べて遷移したかを返す</summary>
+        /// <returns>遷移したかどうか</returns>
+        public bool Check()
         {
-            foreach (var i in this)
+            if (_conditions is null) return false;
+            
+            foreach (var i in _conditions)
             {
+                if (i is null) continue;
+                
                 var temp = i.Invoke();
 
-                if (temp is not null)
+                if (temp)
                 {
-                    return temp;
+                    return false;
                 }
             }
 
-            return null;
+            return false;
         }
         
-        public struct Enumerator : IEnumerator<Func<Type>>
+        public struct Enumerator : IEnumerator<Func<bool>>
         {
             /// <summary>対象のList</summary>
-            private List<Func<Type>> _list;
+            private List<Func<bool>> _list;
             /// <summary>現在のIndex</summary>
             private int _cursor;
 
-            public Enumerator(List<Func<Type>> list)
+            public Enumerator(List<Func<bool>> list)
             {
                 _list = list;
                 _cursor = -1;
@@ -80,7 +84,7 @@ namespace RPGAdventure
 
             object IEnumerator.Current => Current;
 
-            public Func<Type> Current
+            public Func<bool> Current
             {
                 get
                 {

@@ -1,18 +1,32 @@
 using System.Collections;
 using System.Collections.Generic;
+using RPG.Adventure.Player;
 using UnityEngine;
 
-public class PlayerRunState : MonoBehaviour
+public class PlayerRunState : AbstractState
 {
-    // Start is called before the first frame update
-    void Start()
+    public PlayerRunState(PlayerProperty property) : base(property)
+    {
+    }
+    
+    public override void OnEnter()
     {
         
     }
 
-    // Update is called once per frame
-    void Update()
+    public override void OnUpdate()
     {
-        
+    }
+
+    public override void OnFixedUpdate()
+    {
+    }
+
+    public override void OnLateUpdate()
+    {
+    }
+
+    public override void OnExit()
+    {
     }
 }
