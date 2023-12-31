@@ -18,7 +18,7 @@ namespace RPG.Adventure.Player
 
         private void Awake()
         {
-            _property.StateMachine = this;
+            _property.Init(this);
             
             // キャッシュの初期化
             StateCache<PlayerIdleState>.cache = new PlayerIdleState(_property);
@@ -43,6 +43,7 @@ namespace RPG.Adventure.Player
             _currentState?.OnExit();
             _currentState = StateCache<T>.cache;
             _currentState.OnEnter();
+            Debug.Log(nameof(T));
         }
 
         private static class StateCache<T> where T : AbstractState

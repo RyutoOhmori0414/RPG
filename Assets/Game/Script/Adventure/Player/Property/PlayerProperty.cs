@@ -4,6 +4,7 @@ using Cysharp.Threading.Tasks;
 using MessagePipe;
 using UnityEngine;
 using RPG.Adventure.Input;
+using UnityEngine.Serialization;
 using VContainer;
 
 namespace RPG.Adventure.Player
@@ -11,14 +12,14 @@ namespace RPG.Adventure.Player
     [Serializable]
     public class PlayerProperty
     {
+        [FormerlySerializedAs("_walkProperty")] [SerializeField, Tooltip("PlayerWalkのProperty")]
+        private PlayerWalkProperty _walk = default;
+
+        /// <summary>PlayerWalkのProperty</summary>
+        public PlayerWalkProperty Walk => _walk;
+        
         /// <summary>プレイヤーのステートマシーン</summary>
         private PlayerStateMachine _stateMachine = null;
-
-        /// <summary>プレイヤーのステートマシーン</summary>
-        public PlayerStateMachine StateMachine
-        {
-            set => _stateMachine = value;
-        }
 
         /// <summary>PlayerのTransform</summary>
         public Transform PlayerTransform => _stateMachine.transform;
@@ -29,6 +30,13 @@ namespace RPG.Adventure.Player
 
         /// <summary>Inputの更新を受け取るためのSubscriber</summary>
         public ISubscriber<PlayerAdventureInput> InputSubscriber => _inputSubscriber;
+
+        /// <summary>初期化処理</summary>
+        /// <param name="stateMachine">ステートマシン</param>
+        public void Init(PlayerStateMachine stateMachine)
+        {
+            _stateMachine = stateMachine;
+        }
 
         /// <summary>PlayerからGetComponentする</summary>
         /// <typeparam name="T">取得したい型</typeparam>

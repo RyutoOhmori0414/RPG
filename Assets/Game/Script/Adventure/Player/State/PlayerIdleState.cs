@@ -9,9 +9,19 @@ namespace RPG.Adventure.Player
     {
         public PlayerIdleState(PlayerProperty property) : base(property)
         {
-            _conditions = new StateConditions();
-            
-            _property.InputSubscriber.Subscribe(OnInputEvent).AddTo(_property.GetPlayerCancellationTokenOnDestroy());
+            // 条件
+            _conditions = new StateConditions(
+                () =>
+                {
+                    if (_currentInput.Move != Vector2.zero)
+                    {
+                        _property.TransitionState<PlayerWalkState>();
+                        return true;
+                    }
+
+                    return false;
+                }
+            );
         }
         
         public override void OnEnter()
@@ -33,11 +43,6 @@ namespace RPG.Adventure.Player
 
         public override void OnExit()
         {
-        }
-
-        private void OnInputEvent(PlayerAdventureInput input)
-        {
-            Debug.Log(input.Move);
         }
     }   
 }
