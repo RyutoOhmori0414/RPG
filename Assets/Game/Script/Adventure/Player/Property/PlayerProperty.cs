@@ -4,7 +4,6 @@ using Cysharp.Threading.Tasks;
 using MessagePipe;
 using UnityEngine;
 using RPG.Adventure.Input;
-using UnityEngine.Serialization;
 using VContainer;
 
 namespace RPG.Adventure.Player
@@ -12,11 +11,17 @@ namespace RPG.Adventure.Player
     [Serializable]
     public class PlayerProperty
     {
-        [FormerlySerializedAs("_walkProperty")] [SerializeField, Tooltip("PlayerWalkのProperty")]
+        [SerializeField, Tooltip("PlayerWalkのProperty")]
         private PlayerWalkProperty _walk = default;
 
         /// <summary>PlayerWalkのProperty</summary>
         public PlayerWalkProperty Walk => _walk;
+        
+        [SerializeField, Tooltip("PlayerRunのProperty")]
+        private PlayerRunProperty _run = default;
+
+        /// <summary>PlayerRunのProperty</summary>
+        public PlayerRunProperty Run => _run;
         
         /// <summary>プレイヤーのステートマシーン</summary>
         private PlayerStateMachine _stateMachine = null;

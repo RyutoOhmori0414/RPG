@@ -1,8 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using RPG.Adventure.Input;
 using UnityEngine;
-using DG.Tweening;
 
 namespace RPG.Adventure.Player
 {
@@ -36,9 +33,21 @@ namespace RPG.Adventure.Player
             _conditions = new StateConditions(
                 () =>
                 {
+                    // Walk -> Idle
                     if (_currentInput.Move == Vector2.zero && !_isRotating)
                     {
                         _property.TransitionState<PlayerIdleState>();
+                        return true;
+                    }
+
+                    return false;
+                },
+                () =>
+                {
+                    // Walk -> Run
+                    if (_currentInput.IsRunInput)
+                    {
+                        _property.TransitionState<PlayerRunState>();
                         return true;
                     }
 
@@ -52,6 +61,7 @@ namespace RPG.Adventure.Player
         
         public override void OnEnter()
         {
+            UpdateQuaternion();
         }
 
         public override void OnUpdate()
