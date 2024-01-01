@@ -5,9 +5,9 @@ using UnityEngine;
 
 namespace RPG.Adventure.Player
 {
-    public class PlayerIdleState : AbstractState
+    public class AbstractPlayerIdleState : AbstractPlayerState
     {
-        public PlayerIdleState(PlayerProperty property) : base(property)
+        public AbstractPlayerIdleState(PlayerProperty property) : base(property)
         {
             // 条件
             _conditions = new StateConditions(
@@ -16,7 +16,7 @@ namespace RPG.Adventure.Player
                     // Idle -> Walk
                     if (_currentInput.Move != Vector2.zero)
                     {
-                        _property.TransitionState<PlayerWalkState>();
+                        _property.TransitionState<AbstractPlayerWalkState>();
                         return true;
                     }
 
@@ -27,7 +27,7 @@ namespace RPG.Adventure.Player
                     // Idle -> Attack
                     if (_currentInput.IsDecideInput)
                     {
-                        _property.TransitionState<PlayerAttackState>();
+                        _property.TransitionState<AbstractPlayerAttackState>();
                         return true;
                     }
 

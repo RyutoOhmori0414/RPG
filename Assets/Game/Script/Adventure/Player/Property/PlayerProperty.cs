@@ -50,7 +50,7 @@ namespace RPG.Adventure.Player
 
         /// <summary>ステートを遷移させる</summary>
         /// <typeparam name="T">遷移させるState</typeparam>
-        public void TransitionState<T>() where T : AbstractState=> _stateMachine.TransitionState<T>();
+        public void TransitionState<T>() where T : AbstractPlayerState=> _stateMachine.TransitionState<T>();
 
         /// <summary>PlayerのGetCancellationTokenOnDestroy()を取得する</summary>
         /// <returns></returns>

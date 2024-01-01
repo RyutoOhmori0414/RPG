@@ -1,22 +1,25 @@
 using RPG.Adventure.Input;
-using UnityEngine;
 using UniRx;
+using UnityEngine;
 
 namespace RPG.Adventure.Player
 {
-    public class PlayerRunState : AbstractState
+    public class AbstractPlayerWalkState : AbstractPlayerState
     {
-        /// <summary>Stateの入出を通知するReactiveProperty</summary>
-        private readonly ReactiveProperty<bool> _isRunRP = new ReactiveProperty<bool>();
+        /// <summary>現在移動中かどうかを通知するReactiveProperty</summary>
+        private readonly ReactiveProperty<bool> _isMoveRP = new ReactiveProperty<bool>();
 
-        /// <summary>Stateの入出を通知するReactiveProperty</summary>
-        public IReadOnlyReactiveProperty<bool> IsRunRP => _isRunRP;
+        /// <summary>現在移動中かどうかを通知するReactiveProperty</summary>
+        public IReadOnlyReactiveProperty<bool> IsMoveRP => _isMoveRP;
         
         /// <summary>キャラクターコントローラー</summary>
         private CharacterController _characterController;
 
         /// <summary>カメラのTransform</summary>
         private Transform _cameraTransform = default;
+
+        /// <summary>このステートに入ってからの経過時間</summary>
+        private float _elapsed = 0.0F;
         
         /// <summary>向いていた方向</summary>
         private Quaternion _lastQuaternion = Quaternion.identity;
@@ -32,25 +35,38 @@ namespace RPG.Adventure.Player
         /// <summary>現在回転中かどうか</summary>
         private bool _isRotating = false;
         
-        public PlayerRunState(PlayerProperty property) : base(property)
+        public AbstractPlayerWalkState(PlayerProperty property) : base(property)
         {
             _conditions = new StateConditions(
                 () =>
                 {
-                    if (!_currentInput.IsRunInput || _currentInput.Move == Vector2.zero)
+                    // Walk -> Idle
+                    if (_currentInput.Move == Vector2.zero && !_isRotating)
                     {
-                        _property.TransitionState<PlayerWalkState>();
+                        _isMoveRP.Value = false;
+                        _property.TransitionState<AbstractPlayerIdleState>();
                         return true;
                     }
-                    
+
                     return false;
                 },
                 () =>
                 {
-                    // Run -> Attack
+                    // Walk -> Run
+                    if (_currentInput.IsRunInput && _currentInput.Move != Vector2.zero)
+                    {
+                        _property.TransitionState<AbstractPlayerRunState>();
+                        return true;
+                    }
+
+                    return false;
+                },
+                () =>
+                {
+                    // Walk -> Attack
                     if (_currentInput.IsDecideInput)
                     {
-                        _property.TransitionState<PlayerAttackState>();
+                        _property.TransitionState<AbstractPlayerAttackState>();
                         return true;
                     }
 
@@ -64,13 +80,14 @@ namespace RPG.Adventure.Player
         
         public override void OnEnter()
         {
-            _isRunRP.Value = true;
-            
+            _isMoveRP.Value = true;
             UpdateQuaternion();
         }
 
         public override void OnUpdate()
         {
+            _elapsed += Time.deltaTime;
+            
             var moveDir = GetMoveDir();
             MoveOnUpdate(moveDir);
             RotateOnUpdate(moveDir);
@@ -88,9 +105,8 @@ namespace RPG.Adventure.Player
 
         public override void OnExit()
         {
+            _elapsed = 0.0F;
             _rotateUpdateElapsed = 0.0F;
-
-            _isRunRP.Value = false;
         }
 
         protected override void InputEventReceiver(PlayerAdventureInput current)
@@ -115,7 +131,7 @@ namespace RPG.Adventure.Player
         /// <summary>移動処理</summary>
         private void MoveOnUpdate(Vector3 moveDir)
         {
-            moveDir *= _property.Run.MoveSpeed;
+            moveDir *= _property.Walk.MoveSpeed * Mathf.Lerp(0, 1, _elapsed / _property.Walk.MaxSpeedDuration);
             moveDir.y = Physics.gravity.y * Time.deltaTime;
 
             _characterController.Move(moveDir * Time.deltaTime);

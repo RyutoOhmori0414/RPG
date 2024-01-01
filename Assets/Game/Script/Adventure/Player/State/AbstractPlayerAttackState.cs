@@ -5,7 +5,7 @@ using UniRx;
 
 namespace RPG.Adventure.Player
 {
-    public class PlayerAttackState : AbstractState
+    public class AbstractPlayerAttackState : AbstractPlayerState
     {
         /// <summary>Stateの入出を通知するReactiveProperty</summary>
         private readonly ReactiveProperty<bool> _isAttackRP = new ReactiveProperty<bool>();
@@ -13,14 +13,14 @@ namespace RPG.Adventure.Player
         /// <summary>Stateの入出を通知するReactiveProperty</summary>
         public IReadOnlyReactiveProperty<bool> IsAttackRP => _isAttackRP;
         
-        public PlayerAttackState(PlayerProperty property) : base(property)
+        public AbstractPlayerAttackState(PlayerProperty property) : base(property)
         {
             _conditions = new StateConditions(
                 () =>
                 {
                     if (!_isAttackRP.Value)
                     {
-                        _property.TransitionState<PlayerIdleState>();
+                        _property.TransitionState<AbstractPlayerIdleState>();
                         return true;
                     }
                     
