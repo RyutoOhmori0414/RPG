@@ -1,10 +1,17 @@
 using RPG.Adventure.Input;
 using UnityEngine;
+using UniRx;
 
 namespace RPG.Adventure.Player
 {
     public class PlayerRunState : AbstractState
     {
+        /// <summary>Stateの入出を通知するReactiveProperty</summary>
+        private readonly ReactiveProperty<bool> _isRunRP = new ReactiveProperty<bool>();
+
+        /// <summary>Stateの入出を通知するReactiveProperty</summary>
+        public IReadOnlyReactiveProperty<bool> IsRunRP => _isRunRP;
+        
         /// <summary>キャラクターコントローラー</summary>
         private CharacterController _characterController;
 
@@ -37,6 +44,17 @@ namespace RPG.Adventure.Player
                     }
                     
                     return false;
+                },
+                () =>
+                {
+                    // Run -> Attack
+                    if (_currentInput.IsDecideInput)
+                    {
+                        _property.TransitionState<PlayerAttackState>();
+                        return true;
+                    }
+
+                    return false;
                 }
             );
 
@@ -46,6 +64,8 @@ namespace RPG.Adventure.Player
         
         public override void OnEnter()
         {
+            _isRunRP.Value = true;
+            
             UpdateQuaternion();
         }
 
@@ -69,6 +89,8 @@ namespace RPG.Adventure.Player
         public override void OnExit()
         {
             _rotateUpdateElapsed = 0.0F;
+
+            _isRunRP.Value = false;
         }
 
         protected override void InputEventReceiver(PlayerAdventureInput current)

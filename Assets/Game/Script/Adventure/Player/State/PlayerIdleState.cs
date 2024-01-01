@@ -13,9 +13,21 @@ namespace RPG.Adventure.Player
             _conditions = new StateConditions(
                 () =>
                 {
+                    // Idle -> Walk
                     if (_currentInput.Move != Vector2.zero)
                     {
                         _property.TransitionState<PlayerWalkState>();
+                        return true;
+                    }
+
+                    return false;
+                },
+                () =>
+                {
+                    // Idle -> Attack
+                    if (_currentInput.IsDecideInput)
+                    {
+                        _property.TransitionState<PlayerAttackState>();
                         return true;
                     }
 
