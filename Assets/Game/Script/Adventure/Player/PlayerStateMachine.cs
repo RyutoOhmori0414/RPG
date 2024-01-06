@@ -2,10 +2,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using RPG.CommonStateMachine;
 
 namespace RPG.Adventure.Player
 {
-    public class PlayerStateMachine : MonoBehaviour
+    public class PlayerStateMachine : AbstractStateMachine<AbstractPlayerState>
     {
         [SerializeField, Tooltip("プレイヤーのProperty")]
         private PlayerProperty _property = default;
@@ -13,8 +14,8 @@ namespace RPG.Adventure.Player
         /// <summary>プレイヤーのProperty</summary>
         public PlayerProperty PlayerProperty => _property;
 
-        /// <summary>現在のステート</summary>
-        private AbstractState _currentState = null;
+        /// <summary>アニメーションのトリガーを入れるためのクラス</summary>
+        public PlayerAnimParams AnimParams { get; private set; }
 
         private void Awake()
         {
@@ -24,31 +25,19 @@ namespace RPG.Adventure.Player
             StateCache<PlayerIdleState>.cache = new PlayerIdleState(_property);
             StateCache<PlayerWalkState>.cache = new PlayerWalkState(_property);
             StateCache<PlayerRunState>.cache = new PlayerRunState(_property);
+            StateCache<PlayerAttackState>.cache = new PlayerAttackState(_property);
+            
+            // AnimParamの初期化
+            AnimParams = new PlayerAnimParams(StateCache<PlayerWalkState>.cache.IsMoveRP,
+                StateCache<PlayerRunState>.cache.IsRunRP, StateCache<PlayerAttackState>.cache.IsAttackRP);
         }
 
         private void Start()
         {
             TransitionState<PlayerIdleState>();
         }
-
-        private void Update() => _currentState.OnUpdate();
-
-        private void FixedUpdate() => _currentState.OnFixedUpdate();
-
-        private void LateUpdate() => _currentState.OnLateUpdate();
-
-
-        public void TransitionState<T>() where T : AbstractState
-        {
-            _currentState?.OnExit();
-            _currentState = StateCache<T>.cache;
-            _currentState.OnEnter();
-            Debug.Log(nameof(T));
-        }
-
-        private static class StateCache<T> where T : AbstractState
-        {
-            public static T cache;
-        }
+        
+        /// <summary>アニメーションイベントで呼ばれる攻撃終了</summary>
+        private void AnimationAttackEnd() => StateCache<PlayerAttackState>.cache.AnimationAttackEnd();
     }
 }

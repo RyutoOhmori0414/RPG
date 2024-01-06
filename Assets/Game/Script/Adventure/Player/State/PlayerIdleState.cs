@@ -1,11 +1,9 @@
-using MessagePipe;
-using RPG.Adventure.Input;
-using Cysharp.Threading.Tasks;
+using RPG.CommonStateMachine;
 using UnityEngine;
 
 namespace RPG.Adventure.Player
 {
-    public class PlayerIdleState : AbstractState
+    public class PlayerIdleState : AbstractPlayerState
     {
         public PlayerIdleState(PlayerProperty property) : base(property)
         {
@@ -13,9 +11,21 @@ namespace RPG.Adventure.Player
             _conditions = new StateConditions(
                 () =>
                 {
+                    // Idle -> Walk
                     if (_currentInput.Move != Vector2.zero)
                     {
                         _property.TransitionState<PlayerWalkState>();
+                        return true;
+                    }
+
+                    return false;
+                },
+                () =>
+                {
+                    // Idle -> Attack
+                    if (_currentInput.IsDecideInput)
+                    {
+                        _property.TransitionState<PlayerAttackState>();
                         return true;
                     }
 

@@ -1,13 +1,18 @@
-using System.Collections;
-using System.Collections.Generic;
 using RPG.Adventure.Input;
+using RPG.CommonStateMachine;
+using UniRx;
 using UnityEngine;
-using DG.Tweening;
 
 namespace RPG.Adventure.Player
 {
-    public class PlayerWalkState : AbstractState
+    public class PlayerWalkState : AbstractPlayerState
     {
+        /// <summary>現在移動中かどうかを通知するReactiveProperty</summary>
+        private readonly ReactiveProperty<bool> _isMoveRP = new ReactiveProperty<bool>();
+
+        /// <summary>現在移動中かどうかを通知するReactiveProperty</summary>
+        public IReadOnlyReactiveProperty<bool> IsMoveRP => _isMoveRP;
+        
         /// <summary>キャラクターコントローラー</summary>
         private CharacterController _characterController;
 
@@ -36,9 +41,33 @@ namespace RPG.Adventure.Player
             _conditions = new StateConditions(
                 () =>
                 {
+                    // Walk -> Idle
                     if (_currentInput.Move == Vector2.zero && !_isRotating)
                     {
+                        _isMoveRP.Value = false;
                         _property.TransitionState<PlayerIdleState>();
+                        return true;
+                    }
+
+                    return false;
+                },
+                () =>
+                {
+                    // Walk -> Run
+                    if (_currentInput.IsRunInput && _currentInput.Move != Vector2.zero)
+                    {
+                        _property.TransitionState<PlayerRunState>();
+                        return true;
+                    }
+
+                    return false;
+                },
+                () =>
+                {
+                    // Walk -> Attack
+                    if (_currentInput.IsDecideInput)
+                    {
+                        _property.TransitionState<PlayerAttackState>();
                         return true;
                     }
 
@@ -52,6 +81,8 @@ namespace RPG.Adventure.Player
         
         public override void OnEnter()
         {
+            _isMoveRP.Value = true;
+            UpdateQuaternion();
         }
 
         public override void OnUpdate()

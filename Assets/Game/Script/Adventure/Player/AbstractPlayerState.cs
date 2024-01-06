@@ -1,11 +1,12 @@
 using Cysharp.Threading.Tasks;
 using MessagePipe;
 using RPG.Adventure.Input;
+using RPG.CommonStateMachine;
 using UnityEngine;
 
 namespace RPG.Adventure.Player
 {
-    public abstract class AbstractState
+    public abstract class AbstractPlayerState : IState
     {
         /// <summary>このステートの遷移条件</summary>
         protected StateConditions _conditions;
@@ -16,7 +17,7 @@ namespace RPG.Adventure.Player
         /// <summary>現在の入力</summary>
         protected PlayerAdventureInput _currentInput = default;
 
-        public AbstractState(PlayerProperty property)
+        public AbstractPlayerState(PlayerProperty property)
         {
             _property = property;
 

@@ -26,8 +26,6 @@ namespace RPG.Adventure.Input
         
         public void Initialize()
         {
-            Debug.Log("Test");
-            
             // InputMapの初期化
             _playerInputMap = new();
             
