@@ -1,11 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using RPG.CommonStateMachine;
 using UniRx;
 
 namespace RPG.Adventure.Player
 {
-    public class AbstractPlayerAttackState : AbstractPlayerState
+    public class PlayerAttackState : AbstractPlayerState
     {
         /// <summary>Stateの入出を通知するReactiveProperty</summary>
         private readonly ReactiveProperty<bool> _isAttackRP = new ReactiveProperty<bool>();
@@ -13,14 +11,14 @@ namespace RPG.Adventure.Player
         /// <summary>Stateの入出を通知するReactiveProperty</summary>
         public IReadOnlyReactiveProperty<bool> IsAttackRP => _isAttackRP;
         
-        public AbstractPlayerAttackState(PlayerProperty property) : base(property)
+        public PlayerAttackState(PlayerProperty property) : base(property)
         {
             _conditions = new StateConditions(
                 () =>
                 {
                     if (!_isAttackRP.Value)
                     {
-                        _property.TransitionState<AbstractPlayerIdleState>();
+                        _property.TransitionState<PlayerIdleState>();
                         return true;
                     }
                     

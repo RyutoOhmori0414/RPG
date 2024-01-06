@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace RPG.Adventure.Player
+namespace RPG.CommonStateMachine
 {
     public class StateConditions : ICollection<Func<bool>>
     {

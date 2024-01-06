@@ -8,7 +8,7 @@ namespace RPG.CommonStateMachine
     public abstract class AbstractStateMachine<TStateBase> : MonoBehaviour where TStateBase : IState
     {
         /// <summary>現在のステート</summary>
-        private IState _currentState = null;
+        protected IState _currentState = null;
         
         protected void Update() => _currentState.OnUpdate();
         protected void FixedUpdate() => _currentState.OnFixedUpdate();
