@@ -12,9 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78b2f3f997d45544fb95696a0d82ef8b, type: 3}
   m_Name: AdventureEnemyData
   m_EditorClassIdentifier: 
-  _chase:
+  _search:
+    _searchRange: 3
     _searchAngle: 60
+    _targetLayer:
+      serializedVersion: 2
+      m_Bits: 0
     _isRandomStayingTime: 0
     _stayingTime: 3
     _randomStayingMin: 1
     _randomStayingMax: 4
+  _chase:
+    _missRange: 5
+    _chaseSpeed: 2

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace RPG.Adventure.Enemy
 {
@@ -8,7 +9,12 @@ namespace RPG.Adventure.Enemy
     public class EnemyPropertyScriptableObject : ScriptableObject
     {
         [SerializeField]
-        private EnemyChaseProperty _chase = new EnemyChaseProperty();
+        private EnemySearchProperty _search = new ();
+
+        public EnemySearchProperty Search => _search;
+
+        [SerializeField]
+        private EnemyChaseProperty _chase = new();
 
         public EnemyChaseProperty Chase => _chase;
     }

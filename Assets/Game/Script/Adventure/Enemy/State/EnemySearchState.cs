@@ -20,7 +20,7 @@ namespace RPG.Adventure.Enemy
         {
             _conditions = new StateConditions(() =>
                 {
-                    if (_elapsed > property.Chase.GetStayingTime())
+                    if (_elapsed > property.Search.GetStayingTime())
                     {
                         stateMachine.TransitionState<EnemySearchState>();
                         return true;
@@ -32,7 +32,8 @@ namespace RPG.Adventure.Enemy
                 {
                     if (_isFound)
                     {
-                        stateMachine.TransitionState<EnemySearchState>();
+                        Debug.Log("見つけた");
+                        stateMachine.TransitionState<EnemyChaseState>();
                         return true;
                     }
                     
@@ -67,26 +68,23 @@ namespace RPG.Adventure.Enemy
 
         public override void OnDrawGizmo()
         {
-            
+            CustomGizmo.DrawFunGizmo(_stateMachine.transform, _property.Search.SearchAngle, _property.Search.SearchRange);
         }
 
         private void Search()
         {
-            var halfExtents = new Vector3(_property.Chase.SearchRange, _property.Chase.SearchRange,
-                _property.Chase.SearchRange);
-
             var enemyTransform = _stateMachine.transform;
+            var playerTransform = _stateMachine.PlayerTransform;
 
-            var count = Physics.OverlapBoxNonAlloc(enemyTransform.position, halfExtents, _colliders,
-                Quaternion.identity, _property.Chase.TargetLayer);
+            // 距離判定
+            var dir = playerTransform.position - enemyTransform.position;
+            var sqrLength = dir.sqrMagnitude;
 
-            if (count > 0)
+            if (sqrLength < _property.Search.SearchRange * _property.Search.SearchRange)
             {
-                var dir = _colliders[0].gameObject.transform.position - _stateMachine.transform.position;
+                var angle = Vector3.Angle(enemyTransform.forward, dir);
 
-                var angle = Vector3.Angle(dir, enemyTransform.forward);
-
-                if (_property.Chase.SearchAngle > angle)
+                if (angle < _property.Search.SearchAngle)
                 {
                     _isFound = true;
                 }
