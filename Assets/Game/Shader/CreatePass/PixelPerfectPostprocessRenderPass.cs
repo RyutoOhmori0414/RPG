@@ -12,16 +12,18 @@ public class PixelPerfectPostprocessRenderPass : ScriptableRenderPass
     private readonly int _scalePropertyId = Shader.PropertyToID("_Scale");
 
     private RTHandle _colorTarget;
+    private RTHandle _copiedColor;
     private RenderTargetIdentifier _cameraColorTarget;
     
     private PixelPerfectPostProcessVolume _volume;
+
+    private bool _requiresColor;
+    private bool _isBeforeTransparent;
 
     public PixelPerfectPostprocessRenderPass(bool applyToSceneView, Material mat)
     {
         if (!mat) return;
         
-        renderPassEvent = RenderPassEvent.BeforeRenderingPostProcessing;
-
         _applyToSceneView = applyToSceneView;
         _profilingSampler = new ProfilingSampler(ProfilingSamplerName);
         _mat = mat;
@@ -30,6 +32,16 @@ public class PixelPerfectPostprocessRenderPass : ScriptableRenderPass
     public void SetTarget(RTHandle handle)
     {
         _colorTarget = handle;
+    }
+
+    public void Setup(bool requireColor, bool isBeforeTransparent, in RenderingData renderingData)
+    {
+        _requiresColor = requireColor;
+        _isBeforeTransparent = isBeforeTransparent;
+        
+        var colorCopyDescriptor = renderingData.cameraData.cameraTargetDescriptor;
+        colorCopyDescriptor.depthBufferBits = (int) DepthBits.None;
+        RenderingUtils.ReAllocateIfNeeded(ref _copiedColor, colorCopyDescriptor, name: "_PixelPerfectColorCopy");
         
         var stack = VolumeManager.instance.stack;
         _volume = stack.GetComponent<PixelPerfectPostProcessVolume>();
@@ -44,10 +56,13 @@ public class PixelPerfectPostprocessRenderPass : ScriptableRenderPass
     public override void Execute(ScriptableRenderContext context, ref RenderingData renderingData)
     {
         if (!_mat || !renderingData.cameraData.postProcessEnabled ||
-            (!_applyToSceneView && renderingData.cameraData.cameraType == CameraType.SceneView)) return;
+            (!_applyToSceneView && renderingData.cameraData.cameraType == CameraType.SceneView) || !_volume.IsActive()) return;
 
         var cmd = CommandBufferPool.Get(ProfilingSamplerName);
+        var cameraData = renderingData.cameraData;
 
+        _colorTarget = renderingData.cameraData.renderer.cameraColorTargetHandle;
+        
         using (new ProfilingScope(cmd, _profilingSampler))
         {
             _mat.SetFloat(_scalePropertyId, _volume.Scale);
@@ -55,10 +70,16 @@ public class PixelPerfectPostprocessRenderPass : ScriptableRenderPass
             Blitter.BlitCameraTexture(cmd, _colorTarget, _colorTarget, _mat, 0);
         }
         
-        Debug.Log("Tes");
+        CoreUtils.SetRenderTarget(cmd, _colorTarget);
+        //CoreUtils.DrawFullScreen(cmd, _mat);
         
         context.ExecuteCommandBuffer(cmd);
         cmd.Clear();
         CommandBufferPool.Release(cmd);
+    }
+
+    public void Dispose()
+    {
+        _copiedColor.Release();
     }
 }

@@ -6,7 +6,7 @@ using RPG.CommonStateMachine;
 
 namespace RPG.Adventure.Player
 {
-    public class PlayerStateMachine : AbstractStateMachine<AbstractPlayerState>
+    public class PlayerStateMachine : AbstractSingleStateMachine<AbstractPlayerState>
     {
         [SerializeField, Tooltip("プレイヤーのProperty")]
         private PlayerProperty _property = default;
