@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UniRx;
+using UnityEngine.Serialization;
 
 namespace RPG.Adventure.Player
 {
@@ -12,8 +13,8 @@ namespace RPG.Adventure.Player
         [SerializeField, Tooltip("PlayerのAnimator")]
         private Animator _animator = default;
 
-        [SerializeField, Tooltip("PlayerStateMachine")]
-        private PlayerStateMachine _stateMachine = default;
+        [FormerlySerializedAs("singleStateMachine")] [FormerlySerializedAs("_stateMachine")] [SerializeField, Tooltip("PlayerStateMachine")]
+        private PlayerStateMachine stateMachine = default;
 
         /// <summary>IsMoveのHash</summary>
         private readonly int _isMoveHash = Animator.StringToHash("IsMove");
@@ -24,7 +25,7 @@ namespace RPG.Adventure.Player
 
         private void Start()
         {
-            var param = _stateMachine.AnimParams;
+            var param = stateMachine.AnimParams;
             param.IsMove.Subscribe(value => _animator.SetBool(_isMoveHash, value)).AddTo(this);
             param.IsRunning.Subscribe(value => _animator.SetBool(_isRunningHash, value)).AddTo(this);
             param.IsAttack.Subscribe(value => { if (value) _animator.SetTrigger(_isAttackHash); }).AddTo(this);

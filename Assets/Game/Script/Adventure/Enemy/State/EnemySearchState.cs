@@ -68,13 +68,14 @@ namespace RPG.Adventure.Enemy
 
         public override void OnDrawGizmo()
         {
-            CustomGizmo.DrawFunGizmo(_stateMachine.transform, _property.Search.SearchAngle, _property.Search.SearchRange);
+            Gizmos.color = new(0.0F, 0.0F, 1.0F, 0.3F);
+            CustomGizmo.DrawFunGizmo(stateMachine.transform, _property.Search.SearchAngle, _property.Search.SearchRange);
         }
 
         private void Search()
         {
-            var enemyTransform = _stateMachine.transform;
-            var playerTransform = _stateMachine.PlayerTransform;
+            var enemyTransform = stateMachine.transform;
+            var playerTransform = stateMachine.PlayerTransform;
 
             // 距離判定
             var dir = playerTransform.position - enemyTransform.position;

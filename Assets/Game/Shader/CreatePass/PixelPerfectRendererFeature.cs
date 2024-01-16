@@ -35,7 +35,7 @@ public class PixelPerfectRendererFeature : ScriptableRendererFeature
     
     public override void Create()
     {
-        _shader = Shader.Find("Custom/PixelPerfectPostprocess");
+        _shader = Shader.Find("Hidden/PixelPerfectPostprocess");
         _mat = CoreUtils.CreateEngineMaterial(_shader);
         _pass = new PixelPerfectPostprocessRenderPass(_applyToSceneView, _mat);
         _pass.renderPassEvent = (RenderPassEvent)_injectionPoint;

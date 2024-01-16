@@ -1,4 +1,4 @@
-Shader "Custom/PixelPerfectPostprocess"
+Shader "Hidden/PixelPerfectPostprocess"
 {
     Properties
     {

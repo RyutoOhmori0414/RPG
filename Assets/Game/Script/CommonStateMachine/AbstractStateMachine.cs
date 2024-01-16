@@ -9,6 +9,8 @@ namespace RPG.CommonStateMachine
     {
         /// <summary>現在のステート</summary>
         protected IState _currentState = null;
+
+        private readonly Dictionary<Type, TStateBase> _cache = new();
         
         protected void Update() => _currentState.OnUpdate();
         protected void FixedUpdate() => _currentState.OnFixedUpdate();
@@ -19,15 +21,33 @@ namespace RPG.CommonStateMachine
         public void TransitionState<T>() where T : TStateBase
         {
             _currentState?.OnExit();
-            _currentState = StateCache<T>.cache;
+            _currentState = _cache[typeof(T)];
             _currentState.OnEnter();
         }
 
-        /// <summary>型をKeyにしてStateをCacheしておくクラス</summary>
-        /// <typeparam name="T">StateType</typeparam>
-        protected static class StateCache<T> where T : TStateBase
+        protected void InitCache<T>(T cache) where T : TStateBase
         {
-             public static T cache;
+            if (_cache.ContainsKey(typeof(T))) return;
+            _cache.Add(typeof(T), cache);
         }
+
+        protected T GetCache<T>() where T : TStateBase
+        {
+            return (T)_cache[typeof(T)];
+        }
+        
+        protected bool TryGetCache<T>(out T cache) where T : TStateBase
+        {
+            if (_cache.ContainsKey(typeof(T)))
+            {
+                cache = (T)_cache[typeof(T)];
+                return true;
+            }
+
+            cache = default;
+            return false;
+        }
+
+        protected void CacheClear() => _cache.Clear();
     }   
 }

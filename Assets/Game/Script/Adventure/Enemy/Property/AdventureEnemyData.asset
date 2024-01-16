@@ -17,7 +17,7 @@ MonoBehaviour:
     _searchAngle: 60
     _targetLayer:
       serializedVersion: 2
-      m_Bits: 0
+      m_Bits: 64
     _isRandomStayingTime: 0
     _stayingTime: 3
     _randomStayingMin: 1

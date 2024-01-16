@@ -9,6 +9,10 @@ namespace RPG.Adventure.Enemy
     public class EnemyPropertyScriptableObject : ScriptableObject
     {
         [SerializeField]
+        private bool _isUseNavmesh = false;
+        public bool IsUseNavmesh => _isUseNavmesh;
+        
+        [SerializeField]
         private EnemySearchProperty _search = new ();
 
         public EnemySearchProperty Search => _search;

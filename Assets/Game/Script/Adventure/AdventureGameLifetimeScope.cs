@@ -1,14 +1,17 @@
 using MessagePipe;
+using RPG.Adventure;
 using RPG.Adventure.Input;
 using RPG.Adventure.Player;
+using RPG.Sandbox;
 using UnityEngine;
+using UnityEngine.Serialization;
 using VContainer;
 using VContainer.Unity;
 
 public class AdventureGameLifetimeScope : LifetimeScope
 {
     [SerializeField, Tooltip("PlayerのStateMachine")]
-    private PlayerStateMachine _stateMachine = default;
+    private PlayerStateMachine stateMachine = default;
     
     protected override void Configure(IContainerBuilder builder)
     {
@@ -19,6 +22,9 @@ public class AdventureGameLifetimeScope : LifetimeScope
         // Provider
         builder.RegisterEntryPoint<PlayerAdventureInputProvider>(Lifetime.Singleton);
 
-        builder.RegisterComponent(_stateMachine.PlayerProperty);
+        builder.RegisterComponent(stateMachine.PlayerProperty);
+        
+        // Manager
+        builder.Register<IAdventureManager, TestAdventureManager>(Lifetime.Singleton);
     }
 }
