@@ -54,13 +54,13 @@ namespace RPG.Adventure.Enemy
         public override void OnDrawGizmo()
         {
             Gizmos.color = new(0.0F, 1.0F, 0.0F, 0.3F);
-            CustomGizmo.DrawFunGizmo(stateMachine.transform, 360.0F, _property.Chase.MissRange);
+            CustomGizmo.DrawFunGizmo(_stateMachine.transform, 360.0F, _property.Chase.MissRange);
         }
 
         private void Chase()
         {
-            var enemyTransform = stateMachine.transform;
-            var playerTransform = stateMachine.PlayerTransform;
+            var enemyTransform = _stateMachine.transform;
+            var playerTransform = _stateMachine.PlayerTransform;
 
             var dir = playerTransform.position - enemyTransform.position;
             dir.y = 0.0F;

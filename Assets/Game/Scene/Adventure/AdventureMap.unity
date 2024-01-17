@@ -639,6 +639,8 @@ MonoBehaviour:
   autoRun: 1
   autoInjectGameObjects: []
   stateMachine: {fileID: 687473057}
+  _enemyStateMachines:
+  - {fileID: 6716114865190666007}
 --- !u!4 &1402614952
 Transform:
   m_ObjectHideFlags: 0
@@ -4505,7 +4507,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _property: {fileID: 11400000, guid: 2028eee3cc675ff4c8806aec13bc7774, type: 2}
-  player: {fileID: 687473057}
+  _player: {fileID: 687473057}
 --- !u!143 &6716114865190666008
 CharacterController:
   m_ObjectHideFlags: 0

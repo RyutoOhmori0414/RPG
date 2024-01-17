@@ -1,10 +1,8 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using RPG.CommonStateMachine;
 using RPG.Adventure.Player;
 using UnityEngine.Serialization;
+using VContainer;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -16,13 +14,18 @@ namespace RPG.Adventure.Enemy
     {
         [SerializeField, Tooltip("EnemyのData")]
         private EnemyPropertyScriptableObject _property = default;
-        [FormerlySerializedAs("playerSingle")] [FormerlySerializedAs("_player")] [SerializeField]
-        private PlayerStateMachine player = default;
+        [FormerlySerializedAs("player")] [SerializeField]
+        private PlayerStateMachine _player = default;
+
+        [Inject]
+        private IAdventureManager _adventureManager = default;
+
+        public IAdventureManager AdventureManager => _adventureManager;
         
         private Animator _animator = default;
         public Animator EnemyAnimator => _animator;
         
-        public Transform PlayerTransform => player.transform;
+        public Transform PlayerTransform => _player.transform;
 
         private void Awake()
         {
@@ -66,11 +69,9 @@ namespace RPG.Adventure.Enemy
                     GetCache<EnemySearchState>().OnDrawGizmo();
                 }
                 
-                
-                
                 if (TryGetCache(out EnemyChaseState cache2))
                 {
-                    cache.OnDrawGizmo();
+                    cache2.OnDrawGizmo();
                 }
                 else
                 {
