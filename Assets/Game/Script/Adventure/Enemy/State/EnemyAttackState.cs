@@ -30,7 +30,7 @@ namespace RPG.Adventure.Enemy
             _isAttacking = true;
             
             // Animatorのフラグをたてる
-            stateMachine.EnemyAnimator.SetTrigger(_attackParamHash);
+            _stateMachine.EnemyAnimator.SetTrigger(_attackParamHash);
         }
 
         public override void OnUpdate()
@@ -54,6 +54,7 @@ namespace RPG.Adventure.Enemy
         public void OnAttackEndAnimationEvent()
         {
             _isAttacking = false;
+            _stateMachine.AdventureManager.TransitionToBattle(IAdventureManager.ToBattleAdvantage.EnemyAdvantage);
         }
     }   
 }

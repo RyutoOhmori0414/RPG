@@ -35,7 +35,7 @@ namespace RPG.Adventure.Enemy
 
         public void OnAttackedAnimationEvent()
         {
-            
+            _stateMachine.AdventureManager.TransitionToBattle(IAdventureManager.ToBattleAdvantage.None);
         }
     }   
 }

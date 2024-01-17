@@ -12,12 +12,12 @@ namespace RPG.Adventure.Enemy
 
         protected readonly EnemyPropertyScriptableObject _property;
 
-        protected readonly EnemyStateMachine stateMachine;
+        protected readonly EnemyStateMachine _stateMachine;
 
         public AbstractEnemyState(EnemyPropertyScriptableObject property, EnemyStateMachine stateMachine)
         {
             _property = property;
-            this.stateMachine = stateMachine;
+            this._stateMachine = stateMachine;
         }
         
         public abstract void OnEnter();
