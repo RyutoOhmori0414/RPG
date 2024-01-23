@@ -21,5 +21,10 @@ namespace RPG.Adventure.Enemy
         private EnemyChaseProperty _chase = new();
 
         public EnemyChaseProperty Chase => _chase;
+
+        [SerializeField]
+        private EnemyAttackProperty _attack = new();
+
+        public EnemyAttackProperty Attack => _attack;
     }
 }

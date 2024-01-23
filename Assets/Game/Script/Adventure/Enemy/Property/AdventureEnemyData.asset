@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78b2f3f997d45544fb95696a0d82ef8b, type: 3}
   m_Name: AdventureEnemyData
   m_EditorClassIdentifier: 
+  _isUseNavmesh: 0
   _search:
     _searchRange: 3
     _searchAngle: 60
@@ -25,3 +26,10 @@ MonoBehaviour:
   _chase:
     _missRange: 5
     _chaseSpeed: 2
+  _attack:
+    _attackAreaDistance: 0.89
+    _attackAreaOffset: {x: 0, y: 0.51, z: 0}
+    _attackAreaSize: {x: 1, y: 1, z: 1}
+    _attackTarget:
+      serializedVersion: 2
+      m_Bits: 64

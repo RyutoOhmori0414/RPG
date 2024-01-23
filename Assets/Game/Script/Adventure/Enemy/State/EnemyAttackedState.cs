@@ -9,11 +9,12 @@ namespace RPG.Adventure.Enemy
     {
         public EnemyAttackedState(EnemyPropertyScriptableObject property, EnemyStateMachine stateMachine) : base(property, stateMachine)
         {
+            _conditions = new ();
         }
 
         public override void OnEnter()
         {
-            _conditions = new ();
+            _stateMachine.AdventureManager.TransitionToBattle(IAdventureManager.ToBattleAdvantage.None);
         }
 
         public override void OnUpdate()
