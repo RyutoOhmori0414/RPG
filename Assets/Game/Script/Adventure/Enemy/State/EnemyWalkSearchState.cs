@@ -10,9 +10,12 @@ namespace RPG.Adventure.Enemy
         private bool _isFound = false;
 
         private Vector3 _target = Vector3.zero;
+
+        private CharacterController _characterController;
         
         public EnemyWalkSearchState(EnemyPropertyScriptableObject property, EnemyStateMachine stateMachine) : base(property, stateMachine)
         {
+            _characterController = stateMachine.GetComponent<CharacterController>();
         }
 
         public override void OnEnter()
@@ -34,6 +37,7 @@ namespace RPG.Adventure.Enemy
 
         public override void OnExit()
         {
+            _isFound = false;
         }
         
         public override void OnDrawGizmo()
@@ -50,7 +54,14 @@ namespace RPG.Adventure.Enemy
         
         private void Walk()
         {
-            
+            var dir = _target - _stateMachine.transform.position;
+            dir.Normalize();
+
+            dir *= _property.Search.SearchWalkSpeed;
+
+            dir.y = Physics.gravity.y * Time.deltaTime;
+
+            _characterController.Move(dir * Time.deltaTime);
         }
         
         private void Search()

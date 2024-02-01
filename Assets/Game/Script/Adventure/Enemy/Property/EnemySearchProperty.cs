@@ -33,6 +33,10 @@ namespace RPG.Adventure.Enemy
         [SerializeField, Tooltip("滞在時間がランダムの際に使用される最大値")]
         private float _randomStayingMax = 4f;
 
+        [SerializeField]
+        private float _searchWalkSpeed = 2F;
+        public float SearchWalkSpeed => _searchWalkSpeed;
+
         /// <summary>このステートの滞在時間</summary>
         public float GetStayingTime()
         {
