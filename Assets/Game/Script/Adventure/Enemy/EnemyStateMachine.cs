@@ -47,6 +47,9 @@ namespace RPG.Adventure.Enemy
             CacheClear();
         }
 
+        /// <summary>攻撃した際のAnimationEvent</summary>
+        private void OnAttackAnimationEvent() => GetCache<EnemyAttackState>().OnAttackAnimationEvent();
+        
         /// <summary>攻撃終了を伝えるAnimationEvent</summary>
         private void OnAttackEndAnimationEvent() => GetCache<EnemyAttackState>().OnAttackEndAnimationEvent();
 
@@ -59,9 +62,9 @@ namespace RPG.Adventure.Enemy
             }
             else
             {
-                if (TryGetCache(out EnemySearchState cache))
+                if (TryGetCache(out EnemySearchState search))
                 {
-                    cache.OnDrawGizmo();
+                    search.OnDrawGizmo();
                 }
                 else
                 {
@@ -69,14 +72,24 @@ namespace RPG.Adventure.Enemy
                     GetCache<EnemySearchState>().OnDrawGizmo();
                 }
                 
-                if (TryGetCache(out EnemyChaseState cache2))
+                if (TryGetCache(out EnemyChaseState chase))
                 {
-                    cache2.OnDrawGizmo();
+                    chase.OnDrawGizmo();
                 }
                 else
                 {
                     InitCache(new EnemyChaseState(_property, this));
                     GetCache<EnemyChaseState>().OnDrawGizmo();
+                }
+                
+                if (TryGetCache(out EnemyAttackState attack))
+                {
+                    attack.OnDrawGizmo();
+                }
+                else
+                {
+                    InitCache(new EnemyAttackState(_property, this));
+                    GetCache<EnemyAttackState>().OnDrawGizmo();
                 }
             }
         }
