@@ -1,0 +1,145 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dcddc5c2186e3e9459661932dbf5d9d4, type: 3}
+  m_Name: DataContainer
+  m_EditorClassIdentifier: 
+  _novelData:
+  - rid: 7282879700441235457
+  - rid: 7282879746040659968
+  - rid: 7282879746040659969
+  - rid: 7282879746040659972
+  - rid: 7282879746040659976
+  references:
+    version: 2
+    RefIds:
+    - rid: 7282879700441235457
+      type: {class: TextDrawCommand, ns: NovelGameEditor, asm: Assembly-CSharp}
+      data:
+        _text: "\u3044\u307E\u308F\u306E\u969B\u3060\u305E"
+        _durateion: 1
+        _voice: {fileID: 8300000, guid: b27994e343ac8b54e90a9e13087443f0, type: 3}
+        _useVoiceTime: 1
+        _fadeSpeed: 0.15
+        _textColor: {r: 1, g: 0, b: 0.76595783, a: 1}
+    - rid: 7282879746040659968
+      type: {class: TextDrawCommand, ns: NovelGameEditor, asm: Assembly-CSharp}
+      data:
+        _text: "\u9818\u57DF\u5C55\u958B"
+        _durateion: 1
+        _voice: {fileID: 8300000, guid: c0e2ca5a5f787c34c84a9223f944d96b, type: 3}
+        _useVoiceTime: 1
+        _fadeSpeed: 1
+        _textColor: {r: 1, g: 0, b: 0.7647059, a: 1}
+    - rid: 7282879746040659969
+      type: {class: WaitAllCommand, ns: NovelGameEditor, asm: Assembly-CSharp}
+      data:
+        _commands:
+        - rid: 7282879746040659970
+        - rid: 7282879746040659971
+    - rid: 7282879746040659970
+      type: {class: TextDrawCommand, ns: NovelGameEditor, asm: Assembly-CSharp}
+      data:
+        _text: "\u7121\u91CF\u7A7A\u51E6"
+        _durateion: 1
+        _voice: {fileID: 8300000, guid: 6cd30e2a09f7269498dff9026eaddf92, type: 3}
+        _useVoiceTime: 1
+        _fadeSpeed: 1
+        _textColor: {r: 1, g: 0, b: 0.7647059, a: 1}
+    - rid: 7282879746040659971
+      type: {class: ChangeImageCommand, ns: NovelGameEditor, asm: Assembly-CSharp}
+      data:
+        _target: 3
+        _effectType: 1
+        _duration: 2
+        _changeSprite: {fileID: 21300000, guid: 500d7d0f4799e0b4a92423858a309309,
+          type: 3}
+    - rid: 7282879746040659972
+      type: {class: WaitAllCommand, ns: NovelGameEditor, asm: Assembly-CSharp}
+      data:
+        _commands:
+        - rid: 7282879746040659973
+        - rid: 7282879746818179074
+    - rid: 7282879746040659973
+      type: {class: TextDrawCommand, ns: NovelGameEditor, asm: Assembly-CSharp}
+      data:
+        _text: "\u3046\u308F\u30FC"
+        _durateion: 1
+        _voice: {fileID: 8300000, guid: b33a749f175e40a4aa31fab9f9511b75, type: 3}
+        _useVoiceTime: 1
+        _fadeSpeed: 1
+        _textColor: {r: 0.1248008, g: 1, b: 0, a: 1}
+    - rid: 7282879746040659976
+      type: {class: WaitAllCommand, ns: NovelGameEditor, asm: Assembly-CSharp}
+      data:
+        _commands:
+        - rid: 7282879746040659977
+        - rid: 7282879746818179075
+        - rid: 7282879746818179085
+    - rid: 7282879746040659977
+      type: {class: TextDrawCommand, ns: NovelGameEditor, asm: Assembly-CSharp}
+      data:
+        _text: "\u60C5\u5831\u304C\u5B8C\u7D50\u3057\u306A\u3044\u306E\u3060\u30FC"
+        _durateion: 1
+        _voice: {fileID: 8300000, guid: 07eaba199cb75e54da8683cbe4bd978d, type: 3}
+        _useVoiceTime: 1
+        _fadeSpeed: 1
+        _textColor: {r: 0.1254902, g: 1, b: 0, a: 1}
+    - rid: 7282879746818179074
+      type: {class: FadeCommand, ns: NovelGameEditor, asm: Assembly-CSharp}
+      data:
+        _fadeTarget: 0
+        _effectType: 0
+        _fadeMode: 1
+        _duration: 1
+    - rid: 7282879746818179075
+      type: {class: FadeCommand, ns: NovelGameEditor, asm: Assembly-CSharp}
+      data:
+        _fadeTarget: 0
+        _effectType: 1
+        _fadeMode: 0
+        _duration: 1
+    - rid: 7282879746818179085
+      type: {class: ConnectCommand, ns: NovelGameEditor, asm: Assembly-CSharp}
+      data:
+        _commands:
+        - rid: 7282879746818179086
+        - rid: 7282879746818179087
+        - rid: 7282879746818179088
+        - rid: 7282879746818179089
+    - rid: 7282879746818179086
+      type: {class: FadeCommand, ns: NovelGameEditor, asm: Assembly-CSharp}
+      data:
+        _fadeTarget: 2
+        _effectType: 1
+        _fadeMode: 1
+        _duration: 4
+    - rid: 7282879746818179087
+      type: {class: FadeCommand, ns: NovelGameEditor, asm: Assembly-CSharp}
+      data:
+        _fadeTarget: 2
+        _effectType: 1
+        _fadeMode: 0
+        _duration: 1
+    - rid: 7282879746818179088
+      type: {class: FadeCommand, ns: NovelGameEditor, asm: Assembly-CSharp}
+      data:
+        _fadeTarget: 1
+        _effectType: 1
+        _fadeMode: 1
+        _duration: 1
+    - rid: 7282879746818179089
+      type: {class: FadeCommand, ns: NovelGameEditor, asm: Assembly-CSharp}
+      data:
+        _fadeTarget: 1
+        _effectType: 1
+        _fadeMode: 0
+        _duration: 6
