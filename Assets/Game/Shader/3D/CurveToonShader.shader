@@ -203,6 +203,7 @@ Shader "Custom/CurveToonShader"
             {
                 Ref [_OutlineStencilRef]
                 Comp NotEqual
+                Pass Replace
             }
             
             HLSLPROGRAM
