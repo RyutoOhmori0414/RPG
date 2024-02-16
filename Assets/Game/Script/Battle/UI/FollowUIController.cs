@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -32,9 +33,13 @@ namespace RPG.Battle.UI
         {
             get
             {
-                if (!_mainCam)
+                if (!_mainCam && !Camera.main)
                 {
                     _mainCam = Camera.main;
+                }
+                else if (!_mainCam)
+                {
+                    _mainCam = FindObjectOfType<Camera>();
                 }
 
                 return _mainCam;
@@ -63,6 +68,11 @@ namespace RPG.Battle.UI
         }
 
         private void LateUpdate()
+        {
+            CalcRectPos();
+        }
+
+        private void OnValidate()
         {
             CalcRectPos();
         }

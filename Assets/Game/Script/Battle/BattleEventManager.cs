@@ -15,6 +15,7 @@ namespace RPG.Battle.System
         public BattleEventManager(IPublisher<PhaseParams> phasePublisher)
         {
             _phasePublisher = phasePublisher;
+            _phasePublisher.Publish(new PhaseParams(_currentTurn, _currentPhase, true));
         }
 
         public void PhaseEnd()
