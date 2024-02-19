@@ -13,7 +13,8 @@ namespace RPG.Battle.UI
     {
         [Inject]
         private ISubscriber<PhaseParams> _subscriber;
-
+        [SerializeField]
+        private UnityEvent _onInitialize;
         [SerializeField]
         private UnityEvent _onPlayPhaseStart;
         [SerializeField]
@@ -21,6 +22,7 @@ namespace RPG.Battle.UI
 
         private void Awake()
         {
+            _onInitialize.Invoke();
             destroyCancellationToken.Register(_subscriber.Subscribe(RegisterMethod).Dispose);
         }
 
