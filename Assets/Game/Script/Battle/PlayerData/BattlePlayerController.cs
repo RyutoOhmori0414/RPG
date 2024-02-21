@@ -21,12 +21,15 @@ namespace RPG.Battle.Player
         private float _MaxHP = 100F;
 
         private float _currentHP;
+
+        [SerializeField]
+        private float _attack = 50F;
         
         [Inject]
         private ISubscriber<PhaseParams> _subscriber;
         
         private IPlayerSkill[] _playerSkills;
-        public List<IPlayerSkill> PlayerSkills => _playerSkills.ToList();
+        public IPlayerSkill[] PlayerSkills => _playerSkills;
 
         public bool IsGuard { get; set; }
         
@@ -34,6 +37,11 @@ namespace RPG.Battle.Player
         {
             _playerSkills = Array.ConvertAll(_loadSkillNames, x => _skills.GetSkill(x));
             _currentHP = _MaxHP;
+        }
+
+        public void Skill(IPlayerSkill skill, IDamage target)
+        {
+            Debug.Log(skill.SkillName);
         }
 
         public void SendDamage(float damage, BattleAttribute type)
@@ -46,5 +54,12 @@ namespace RPG.Battle.Player
             _currentHP -= damage;
             IsGuard = false;
         }
+
+        public void SendHeal(float healHp)
+        {
+            Debug.Log($"heal:{healHp}");
+        }
+
+        public Transform Transform => transform;
     }   
 }

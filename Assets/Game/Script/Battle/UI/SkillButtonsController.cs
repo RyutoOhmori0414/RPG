@@ -21,11 +21,14 @@ namespace RPG.Battle.UI
         {
             for (int i = 0; i < _buttonTexts.Length; i++)
             {
-                if (_playerController.PlayerSkills.Count > i)
+                if (_playerController.PlayerSkills.Length > i)
                 {
-                    var tempText = _buttonTexts[i].GetComponentInChildren<TMP_Text>();
-
-                    tempText.text = _playerController.PlayerSkills[i].SkillName;
+                    var button = _buttonTexts[i];
+                    var skill = _playerController.PlayerSkills[i];
+                    var tempText = button.GetComponentInChildren<TMP_Text>();
+                    
+                    
+                    tempText.text = skill.SkillName;
                 }
                 else
                 {

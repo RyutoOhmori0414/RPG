@@ -10,16 +10,4 @@ namespace RPG.Battle.Player
     
         public BattleAttribute Type { get; }
     }
-
-    /// <summary>battleで使用する属性</summary>
-    [Serializable]
-    public enum BattleAttribute
-    {
-        None,
-        Normal,
-        Fire,
-        Ice,
-        Thunder,
-        Wind
-    }
 }
